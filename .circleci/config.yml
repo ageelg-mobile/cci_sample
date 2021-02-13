@@ -10,6 +10,15 @@ commands:
       - run: echo ${CIRCLE_WORKFLOW_ID}
 # Orchestrate or schedule a set of jobs
 jobs:
+  my_err_job:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: return 1
+      - run:
+          name: on error
+          command: echo "Hello Error!"
+          when: on_fail
   print_wfid:
     docker:
       - image: circleci/node:13.8.0
@@ -37,3 +46,4 @@ workflows:
           requires:
             - print_hello
       - print_wfid
+      - my_err_job
